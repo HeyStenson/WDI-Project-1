@@ -23,3 +23,10 @@ form button {
 #messages li:nth-child(odd) { 
 	background: #eee; 
 }
+
+#color-box {
+	height: 100px;
+	width: 100px;
+	color: red;
+	background-color: green;
+}

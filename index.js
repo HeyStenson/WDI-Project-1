@@ -32,6 +32,9 @@ io.on('connection', function (socket) {
 		io.emit('chat message', msg);
 		console.log('message: ' + msg);
 	});
+	socket.on('box-clicked', function (rgb) {
+		io.emit('box-clicked', rgb);
+	})
 });
 
 
