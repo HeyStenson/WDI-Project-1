@@ -1,20 +1,31 @@
 // var app_ = require("express")(); // shorthand for directly create app. Need express for path definitions
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var express = require('express'),
+		app = express(),
+		http = require('http').Server(app),
+		io = require('socket.io')(http),
+		path = require("path");
+
 
 /* Set path to files for clients */
-app.use('/', express.static('.'));
+var views = path.join(process.cwd(), 'views');
+// app.use('/', express.static('/views'));
+app.use('/static', express.static('public'));
+app.use('/vendor', express.static('node_modules'));
+// app.use(bodyParser.urlencoded({ extended: true})); // haven't installed bodyParser yet
+
 
 
 /* HTML Routes */
 app.get('/', function (req, res) {
-	res.sendFile("/index.html");
+	res.sendFile(path.join(views, 'index.html'));
+});
+app.get('/ticktack', function (req, res) {
+	res.sendFile(path.join(views, 'ticktack.html'));
 });
 
-/*  */
-
+/* Usernames */
+var usernames = {};
+var numUsers = 0;
 
 /* Socket.IO Routes */
 io.on('connection', function (socket) {
@@ -29,7 +40,24 @@ io.on('connection', function (socket) {
 	socket.on('box-clicked', function (rgb) {
 		io.emit('box-clicked', rgb);
 	})
+	socket.on('login-name', function (name) {
+		socket.username = name;
+		username[username] = name;
+		++numUsers;
+		// addedUser = true;
+		socket.emit('login', {
+			numUsers: numUsers
+		});
+	});
+/* TickTackToe connections */
+	socket.on('clicked-cell', function (celldata) {
+		console.log("received clicked cell");
+		console.log("celldata: " + celldata.cell + ", " + celldata.player);
+		io.emit('clicked-cell', celldata);
+	});
+
 });
+
 
 
 // // sending to sender-client only

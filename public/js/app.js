@@ -9,19 +9,23 @@ $(function() { // Document ready
 	$('#login-form').submit(function(e) {
 		console.log("Sanity check, in login listener");
 		e.preventDefault();
-		if ($('#nickname').val() !== "") {
-			console.log("Your name will be " + $('#nickname').val());
-				
+		var name = $('#nickname').val();
+		if (name !== '') {
+			console.log("Your name will be " + name);
+			socket.emit('login-name', name);
+			$('#nickname').val('');
 		}
 	});
-
+	socket.on('login', function (name) {
+		
+	})
 
 
 
 // chat message
 	$('#message-form').submit(function() {
-		socket.emit('chat message', $('#m').val());
-		$('#m').val('');
+		socket.emit('chat message', $('#chat-message').val());
+		$('#chat-message').val('');
 		return false;
 	});
 	socket.on('chat message', function (msg) {

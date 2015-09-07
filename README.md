@@ -10,6 +10,9 @@ Allow only one client at the time to manipulate webpage
 
 ### Done 
 
+* Sprint 2.1:
+Created Tick Tack Toe game and players can add X and O.
+
 * Sprint 2:
 Allow two clients to manipulate something graphical.
 

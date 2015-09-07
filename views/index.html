@@ -2,10 +2,10 @@
 <html>
 <head>
 	<title>Socket.IO chat</title>
-	<link rel="stylesheet" type="text/css" href="myStyle.css">
-	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/myStyle.css">
+	<script type="text/javascript" src="/vendor/jquery/dist/jquery.min.js"></script>
 	<script src="socket.io/socket.io.js"></script>
-	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="/static/js/app.js"></script>
 </head>
 <body>
 <!-- Chat window -->
@@ -24,7 +24,7 @@
 		<ul id="message-list"></ul>
 		<div id="chat-div" class="">
 			<form id="message-form" action="">
-				<input id="m" autocomplete="off">
+				<input id="chat-message" autocomplete="off">
 				<button>Send</button>
 			</form>
 		</div>
@@ -32,5 +32,6 @@
 <!-- End of chat -->
 
 	<div id="color-box">Click to change the color</div>
+	<a href="/ticktack">Play Tick Tack Toe</a>
 </body>
 </html>
