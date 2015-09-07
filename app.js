@@ -4,14 +4,28 @@ $(function() { // Document ready
 	var socket = io();
 	console.log("Socket:", socket);
 
+// Register name
+	// $('#login-form').on('submit', function(e) {
+	$('#login-form').submit(function(e) {
+		console.log("Sanity check, in login listener");
+		e.preventDefault();
+		if ($('#nickname').val() !== "") {
+			console.log("Your name will be " + $('#nickname').val());
+				
+		}
+	});
+
+
+
+
 // chat message
-	$('form').submit(function() {
+	$('#message-form').submit(function() {
 		socket.emit('chat message', $('#m').val());
 		$('#m').val('');
 		return false;
 	});
 	socket.on('chat message', function (msg) {
-		$('#messages').append($('<li>').text(msg));
+		$('#message-list').append($('<li>').text(msg));
 	});
 
 // change color of box
@@ -25,8 +39,6 @@ $(function() { // Document ready
 	socket.on('box-clicked', function (rgb) {
 		$('#color-box').css('background-color', rgb);
 	})
-
-
 
 /* functions */
 function zeroTo255() {

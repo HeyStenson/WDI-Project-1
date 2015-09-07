@@ -8,11 +8,29 @@
 	<script type="text/javascript" src="app.js"></script>
 </head>
 <body>
-	<ul id="messages"></ul>
-	<form action="">
-		<input id="m" autocomplete="off">
-		<button>Send</button>
-	</form>
+<!-- Chat window -->
+	<div id="chat-section" class="chat">
+<!-- Login bar over chat -->
+		<div id="login-bar" class="">
+			<form id="login-form" action="">
+				<h3>Enter a name to join chat</h3>
+				<div id="login-input">
+					<input id="nickname" type="text" maxlength="16" placeholder="Enter your name" autocomplete="on">
+					<button>Enter</button>
+				</div>
+			</form>
+		</div>
+<!-- Chat window including input field -->
+		<ul id="message-list"></ul>
+		<div id="chat-div" class="">
+			<form id="message-form" action="">
+				<input id="m" autocomplete="off">
+				<button>Send</button>
+			</form>
+		</div>
+	</div>
+<!-- End of chat -->
+
 	<div id="color-box">Click to change the color</div>
 </body>
 </html>

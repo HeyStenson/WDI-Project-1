@@ -3,27 +3,21 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-// console.log("app_ comp", app_);
-// console.log("app  comp", app);
-// console.log("expr comp", express);
-// console.log("http", http);
-// console.log("io", io);
 
 /* Set path to files for clients */
 app.use('/', express.static('.'));
 
 
-/* Ajax Routes */
+/* HTML Routes */
 app.get('/', function (req, res) {
 	res.sendFile("/index.html");
 });
 
+/*  */
 
 
 /* Socket.IO Routes */
-// io.on('connection', ...), socket.on('disconnect', ...)
 io.on('connection', function (socket) {
-	// socket.broadcast.emit('hi'); // to broadcast to everyone except a certain socket
 	console.log("A user connected");
 	socket.on('disconnect', function () {
 		console.log("user disconnected");
