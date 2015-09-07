@@ -8,10 +8,10 @@ var express = require('express'),
 
 /* Set path to files for clients */
 var views = path.join(process.cwd(), 'views');
-// app.use('/', express.static('/views'));
+
+app.use(bodyParser.urlencoded({ extended: true}));
 app.use('/static', express.static('public'));
 app.use('/vendor', express.static('node_modules'));
-// app.use(bodyParser.urlencoded({ extended: true})); // haven't installed bodyParser yet
 
 
 
@@ -33,7 +33,7 @@ io.on('connection', function (socket) {
 	socket.on('disconnect', function () {
 		console.log("user disconnected");
 	});
-	socket.on('chat message', function (msg) { // 'chat message' is the connection name defined by emit in app.js
+	socket.on('chat message', function (msg) { 
 		io.emit('chat message', msg);
 		console.log('message: ' + msg);
 	});
@@ -42,7 +42,9 @@ io.on('connection', function (socket) {
 	})
 	socket.on('login-name', function (name) {
 		socket.username = name;
-		username[username] = name;
+		console.log("socket.username: " + socket.username);
+		usernames.username = name;
+		console.log("usernames: " + usernames.username);
 		++numUsers;
 		// addedUser = true;
 		socket.emit('login', {

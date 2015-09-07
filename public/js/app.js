@@ -17,7 +17,9 @@ $(function() { // Document ready
 		}
 	});
 	socket.on('login', function (name) {
-		
+		console.log("socket.username: " + socket.username);
+		console.log("name: " + name);
+
 	})
 
 
