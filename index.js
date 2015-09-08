@@ -3,7 +3,10 @@ var express = require('express'),
 		app = express(),
 		http = require('http').Server(app),
 		io = require('socket.io')(http),
-		path = require("path");
+		path = require('path'),
+		bodyParser = require('body-parser'),
+		db = require('./models'),
+		session = require('express-session');
 
 
 /* Set path to files for clients */
@@ -13,15 +16,107 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use('/static', express.static('public'));
 app.use('/vendor', express.static('node_modules'));
 
+/* create a session */
+app.use(
+	session({
+		secret: "string-that-should-be-generated-later-on", // use keygen, see solutions of express auth
+		resave: false,
+		saveUninitiated: true
+	})
+);
+app.use(function (req, res, next) {
+	// login user
+	req.login = function (user) {
+		req.session.userId = user._id;
+	};
+	//find the current user
+	req.currentUser = function (cb) {
+		db.User.findOne({ _id: req.session.userId },	function (err, user) {
+			req.user = user;
+			cb(null, user);
+		});
+	};
+	//logout the current user
+	req.logout = function () {
+		req.session.userId = null;
+		req.user = null;
+	};
+	//call the next middleware in the stack
+	next();
+});
+
+
 
 
 /* HTML Routes */
 app.get('/', function (req, res) {
-	res.sendFile(path.join(views, 'index.html'));
+	req.currentUser(function (err, user) {
+		console.log("Are we here?");
+		(user) ? res.sendFile(path.join(views, 'index.html')) : res.redirect('/login');
+	});
 });
+
+app.get('/login', function (req, res) {
+	req.currentUser(function (err, user) {
+		(user) ? res.sendFile(path.join(views, 'index.html')) : res.sendFile(path.join(views, 'login.html'));
+	});
+});
+
+app.post('/login', function (req, res) {
+	var user = req.body.user,
+			username = user.username,
+			password = user.password;
+	db.User.authenticate(username, password, function (err, user) {
+		if (err) {
+			res.send(err);
+		} else {
+			console.log(user);
+			req.login(user);
+			req.redirect('/'); 
+		}
+	});
+});
+
+app.get('/signup', function (req, res) {
+	req.currentUser(function (err, user) {
+		(user) ? res.sendFile(path.join(views, 'index.html')) : res.sendFile(path.join(views, 'signup.html')) ;
+	});
+});	
+
+app.post('/signup', function (req, res) {
+	console.log(req.body);
+	var username = req.body.username;
+	var password = req.body.password;
+	db.User.nameAvailability(username, function (available, msg) {
+		console.log("nameAvailability:", available, msg);
+		if (available) {
+			db.User.createSecure(username, password, function() {
+				db.User.authenticate(username, password, function (err, user) {
+					if (err) {
+						res.send(err);
+					} else {
+						console.log(user);
+						req.login(user);
+						res.redirect('/');
+					}
+				});
+			});
+		} else { // username taken
+			res.send(msg);
+		}
+	});
+	// res.send(200);
+});
+
+
+
 app.get('/ticktack', function (req, res) {
 	res.sendFile(path.join(views, 'ticktack.html'));
 });
+
+
+
+
 
 /* Usernames */
 var usernames = {};

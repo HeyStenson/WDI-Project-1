@@ -15,6 +15,7 @@ $(function() { // document ready
 			$r3c2 = $('#r3c2'),
 			$r3c3 = $('#r3c3');
 
+	/* Socket.io connections */
 	$('#gameboard').click(function (e) {
 		console.log(e.toElement.id);
 		var cell = "#" + e.toElement.id;
@@ -31,7 +32,6 @@ $(function() { // document ready
 		whosTurn = celldata.player;
 		$(celldata.cell).text(whosTurn);
 	});
-
 
 
 

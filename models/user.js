@@ -13,8 +13,6 @@ var UserSchema = new Schema({
 
 UserSchema.statics.createSecure = function (username, password, cb) {
 	var _this = this;
-	// _this.findOne({username: username}, function (err, user) {
-	// 	if (user === null) {
 			bcrypt.genSalt( function (err, salt) {
 				bcrypt.hash(password, salt, function (err, hash) {
 					var user = {
@@ -24,16 +22,23 @@ UserSchema.statics.createSecure = function (username, password, cb) {
 					_this.create(user, cb);
 				});
 			});
-		// } else {
-		// 	cb("Username already taken", null);
-		// }
-	// }
 };
+
+UserSchema.statics.nameAvailability = function (username, cb) {
+	this.findOne({username: username}, function (err, user) {
+		if (user === null) {
+			cb(true, "username available");
+		} else {
+			cb(false, "username already taken");
+		}
+	});
+};
+
 
 UserSchema.statics.authenticate = function (username, password, cb) {
 	this.findOne({username: username}, function (err, user) {
 		if (user === null) {
-			cb("Can't find user with that email", null);
+			cb("Username not in database", null);
 		} else if (user.checkPassword(password)) {
 			cb(null, user);
 		} else {
