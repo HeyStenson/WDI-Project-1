@@ -45,11 +45,8 @@ app.use(function (req, res, next) {
 	next();
 });
 
-
-
-
 /* HTML Routes */
-app.get('/', function (req, res) {
+app.get(['/', '/home'], function (req, res) {
 	req.currentUser(function (err, user) {
 		console.log("Are we here?");
 		(user) ? res.sendFile(path.join(views, 'index.html')) : res.redirect('/login');
@@ -72,7 +69,7 @@ app.post('/login', function (req, res) {
 		} else {
 			console.log(user);
 			req.login(user);
-			req.redirect('/'); 
+			res.redirect('/'); 
 		}
 	});
 });
@@ -97,7 +94,7 @@ app.post('/signup', function (req, res) {
 					} else {
 						console.log(user);
 						req.login(user);
-						res.redirect('/');
+						res.send('/home'); // Justin's solution, send instead of redirect
 					}
 				});
 			});
@@ -107,8 +104,6 @@ app.post('/signup', function (req, res) {
 	});
 	// res.send(200);
 });
-
-
 
 app.get('/ticktack', function (req, res) {
 	res.sendFile(path.join(views, 'ticktack.html'));

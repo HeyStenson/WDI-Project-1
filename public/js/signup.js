@@ -22,9 +22,9 @@ $(function() { // document ready
 			message = "Your password doesn't match";
 		} else {
 			$.post('/signup', data)
-				.success(function handleSuceess(response) {
-					document.write(response);
-					// console.log("Successful post", response);
+				.success(function handleSuceess(endpoint) {
+					console.log(endpoint);
+					window.location.href = endpoint; // receives sendFile from backend
 				})
 				.error(function handleError(err) {
 					message = err;
