@@ -76,6 +76,7 @@ app.post('/login', function (req, res) {
 	});
 });
 
+
 app.get('/signup', function (req, res) {
 	req.currentUser(function (err, user) {
 		(user) ? res.sendFile(path.join(views, 'index.html')) : res.sendFile(path.join(views, 'signup.html')) ;
@@ -107,7 +108,9 @@ app.post('/signup', function (req, res) {
 });
 
 app.get('/ticktack', function (req, res) {
-	res.sendFile(path.join(views, 'ticktack.html'));
+	req.currentUser(function (err, user) {
+		(user) ? res.sendFile(path.join(views, 'ticktack.html')) : res.redirect('/login');
+	});
 });
 
 
