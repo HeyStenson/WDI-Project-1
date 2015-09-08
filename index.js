@@ -6,12 +6,14 @@ var express = require('express'),
 		path = require('path'),
 		bodyParser = require('body-parser'),
 		db = require('./models'),
-		session = require('express-session');
+		session = require('express-session'),
+		methodOverride = require('method-override');
 
 
 /* Set path to files for clients */
 var views = path.join(process.cwd(), 'views');
 
+app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use('/static', express.static('public'));
 app.use('/vendor', express.static('node_modules'));
@@ -99,15 +101,28 @@ app.post('/signup', function (req, res) {
 				});
 			});
 		} else { // username taken
-			res.send(msg);
+			res.send(msg); // make this more userfriendly, display in signup page
 		}
 	});
-	// res.send(200);
 });
 
 app.get('/ticktack', function (req, res) {
 	res.sendFile(path.join(views, 'ticktack.html'));
 });
+
+
+
+
+// logout user
+app.delete(['/sessions', '/logout'], function (req, res) {
+	req.logout();
+	res.redirect('/login');
+});
+
+
+
+
+
 
 
 
