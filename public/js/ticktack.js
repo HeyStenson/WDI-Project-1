@@ -17,8 +17,8 @@ $(function() { // document ready
 
 	/* Socket.io connections */
 	$('#gameboard').click(function (e) {
-		console.log(e.toElement.id);
-		var cell = "#" + e.toElement.id;
+		console.log(e.target.id);
+		var cell = "#" + e.target.id;
 		if ($(cell).text() === "") {
 			console.log("Empty cell clicked");
 			(whosTurn === "O") ? whosTurn = "X" : whosTurn = "O"; 

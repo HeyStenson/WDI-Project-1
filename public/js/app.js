@@ -8,7 +8,8 @@ $(function() { // Document ready
 	// $('#login-form').on('submit', function(e) {
 	$('#login-form').submit(function(e) {
 		console.log("Sanity check, in login listener");
-		e.preventDefault();
+		e.defaultPrevented;
+		// e.preventDefault();
 		var name = $('#nickname').val();
 		if (name !== '') {
 			console.log("Your name will be " + name);
