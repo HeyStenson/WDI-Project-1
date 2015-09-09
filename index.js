@@ -147,19 +147,21 @@ io.on('connection', function (socket) {
 	console.log("A user connected: " + socket.id);
 // match socket id with user
 	socket.emit('getSessionId'); // emit to front end to get the session id sent back to add2userlist
-	socket.on('add2userlist', function (userdata) {
+	socket.on('add2userlist', function (userdata) { // receives userdata and adds them to userIds
 		console.log("add2userlist:", userdata);
 		console.log("socke.id:", socket.id);
 		userIds[socket.id] = userdata;
 		activeUsers = Object.keys(userIds);
 		console.log("ActiveUsers:", activeUsers);
+		io.emit('userList', userIds); // send userIds to all clients
 	});
 // on disconnect delete user from userIds array
 	socket.on('disconnect', function () {
 		console.log("user disconnected");
 		delete userIds[(socket.id)];
 		activeUsers = Object.keys(userIds);
-		console.log("user IDs: " + userIds);	
+		console.log("user IDs: ", userIds);	
+		io.emit('userList', userIds); // send userIds to all clients
 	});
 	socket.on('chat message', function (msg) { 
 		console.log('users: ' + userIds);
