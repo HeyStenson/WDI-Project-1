@@ -115,11 +115,11 @@ app.post('/signup', function (req, res) {
 	});
 });
 
-app.get('/ticktack', function (req, res) {
-	req.currentUser(function (err, user) {
-		(user) ? res.sendFile(path.join(views, 'ticktack.html')) : res.redirect('/login');
-	});
-});
+// app.get('/ticktack', function (req, res) {
+// 	req.currentUser(function (err, user) {
+// 		(user) ? res.sendFile(path.join(views, 'ticktack.html')) : res.redirect('/login');
+// 	});
+// });
 
 app.get('/getSessionId', function (req, res) {
 	console.log("Arrived at /getSessionId");
@@ -143,6 +143,7 @@ userIds = {};
 activeUsers = [];
 
 /* Socket.IO Routes */
+/* Main lobby */
 io.on('connection', function (socket) {
 	console.log("A user connected: " + socket.id);
 // match socket id with user
@@ -181,6 +182,12 @@ io.on('connection', function (socket) {
 		++numUsers;
 		socket.emit('login', {
 			numUsers: numUsers
+		});
+	});
+	socket.on('create-game', function (username) {
+		var nsp = io.of(username);
+		nsp.on('connection', function (socket) {
+			console.log("Someone logged in to game room");
 		});
 	});
 /* TickTackToe connections */
