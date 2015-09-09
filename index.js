@@ -158,7 +158,7 @@ io.on('connection', function (socket) {
 // on disconnect delete user from userIds array
 	socket.on('disconnect', function () {
 		console.log("user disconnected");
-		delete userIds[(socket.id)];
+		delete userIds[socket.id];
 		activeUsers = Object.keys(userIds);
 		console.log("user IDs: ", userIds);	
 		io.emit('userList', userIds); // send userIds to all clients
@@ -167,6 +167,7 @@ io.on('connection', function (socket) {
 		console.log('users: ' + userIds);
 		console.log('chat socket: ' + socket.id);
 		console.log("userIds: " + userIds);
+		msg = userIds[socket.id].username + " - " + msg;
 		io.emit('chat message', msg);
 	});
 	socket.on('box-clicked', function (rgb) {

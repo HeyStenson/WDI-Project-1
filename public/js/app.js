@@ -11,10 +11,7 @@ $(function() { // Document ready
 	});
 	socket.on('userList', function (userIds) {
 		$('#user-list').text('') // clear list before appending updated names
-		var socketIds = Object.keys(userIds); // add var
-		userI = userIds; // remove
-		console.log("in userList:", socketIds);
-		console.log("first user:", userIds[socketIds[0]].username);
+		var socketIds = Object.keys(userIds);
 		socketIds.forEach(function (sid) {
 			console.log(userIds[sid].username);
 			$('#user-list').append($('<li>').text(userIds[sid].username));
@@ -49,6 +46,8 @@ $(function() { // Document ready
 	function zeroTo255() {
 		return (Math.floor(Math.random() * 256));
 	}
+
+
 }); // Document ready end
 
 

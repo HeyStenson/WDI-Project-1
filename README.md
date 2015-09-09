@@ -3,6 +3,9 @@ GA WDI Project 1, online multiplayer game
 
 ## Done 
 
+* Sprint 4.2
+Add name to chat message
+
 * Sprint 4.1:
 List logged in users
 
@@ -27,9 +30,9 @@ Set up node server and use socket.io protocol to allow two clients to communicat
 
 ### To Do
 
-* Sprint 4.2
-Add name to chat message.
+* Sprint 5
+Add Tick Tack Toe to index.html
 
-* Sprint 5:
+* Sprint 6:
 Allow only one client at the time to manipulate webpage
 
