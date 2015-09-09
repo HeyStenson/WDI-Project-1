@@ -3,6 +3,9 @@ GA WDI Project 1, online multiplayer game
 
 ## Done 
 
+* Sprint 5
+Add Tick Tack Toe to index.html
+
 * Sprint 4.2
 Add name to chat message
 
@@ -30,9 +33,5 @@ Set up node server and use socket.io protocol to allow two clients to communicat
 
 ### To Do
 
-* Sprint 5
-Add Tick Tack Toe to index.html
-
 * Sprint 6:
-Allow only one client at the time to manipulate webpage
-
+Prevent interraction with tick tack toe game unless in a game, user should be able to create socket room and other user should be able to join
