@@ -1,29 +1,14 @@
 $(function() { // Document ready
 	console.log("Santity check, document ready");
 	/* Socket.io connections */
-	var socket = io();
-	console.log("Socket:", socket);
-
-// Register name
-	// $('#login-form').on('submit', function(e) {
-	$('#login-form').submit(function(e) {
-		console.log("Sanity check, in login listener");
-		e.defaultPrevented;
-		// e.preventDefault();
-		var name = $('#nickname').val();
-		if (name !== '') {
-			console.log("Your name will be " + name);
-			socket.emit('login-name', name);
-			$('#nickname').val('');
-		}
+	socket = io(); // add var
+	socket.on('getSessionId', function () { 
+		console.log("received socket emit from backend");
+		$.get('/getSessionId', function (userdata) {
+			console.log("userdata received", userdata);
+			socket.emit('add2userlist', userdata);
+		});
 	});
-	socket.on('login', function (name) {
-		console.log("socket.username: " + socket.username);
-		console.log("name: " + name);
-
-	})
-
-
 
 // chat message
 	$('#message-form').submit(function() {
@@ -48,7 +33,10 @@ $(function() { // Document ready
 	})
 
 /* functions */
-function zeroTo255() {
-	return (Math.floor(Math.random() * 256));
-}
+	function zeroTo255() {
+		return (Math.floor(Math.random() * 256));
+	}
 }); // Document ready end
+
+
+

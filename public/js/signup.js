@@ -21,6 +21,8 @@ $(function() { // document ready
 			console.log($('#password1').val(), $('#password2').val());
 			message = "Your password doesn't match";
 		} else {
+
+
 			$.post('/signup', data)
 				.success(function handleSuceess(endpoint) {
 					console.log(endpoint);
@@ -30,6 +32,8 @@ $(function() { // document ready
 					message = err;
 					console.log("Error", err);
 				});
+
+
 		}
 		console.log("message", message);
 	});

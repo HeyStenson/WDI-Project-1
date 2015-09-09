@@ -24,8 +24,15 @@ app.use(
 		secret: "string-that-should-be-generated-later-on", // use keygen, see solutions of express auth
 		resave: false,
 		saveUninitiated: true
+		// cookie: {httpOnly: false}
 	})
 );
+/*  */
+
+
+
+
+
 app.use(function (req, res, next) {
 	// login user
 	req.login = function (user) {
@@ -33,6 +40,7 @@ app.use(function (req, res, next) {
 	};
 	//find the current user
 	req.currentUser = function (cb) {
+		console.log("In req.currentUser");
 		db.User.findOne({ _id: req.session.userId },	function (err, user) {
 			req.user = user;
 			cb(null, user);
@@ -50,7 +58,7 @@ app.use(function (req, res, next) {
 /* HTML Routes */
 app.get(['/', '/home'], function (req, res) {
 	req.currentUser(function (err, user) {
-		console.log("Are we here?");
+		console.log("req when going to /: " + req);
 		(user) ? res.sendFile(path.join(views, 'index.html')) : res.redirect('/login');
 	});
 });
@@ -113,8 +121,14 @@ app.get('/ticktack', function (req, res) {
 	});
 });
 
-
-
+app.get('/getSessionId', function (req, res) {
+	console.log("Arrived at /getSessionId");
+	console.log(req.session.userId);
+	req.currentUser(function (err, user) {
+		console.log("USER:" + user);
+		(user) ? res.send({username: user.username, gamesPlayed: user.gamesPlayed, gamesWon: user.gamesWon, _id: user._id}) : console.log("No USER!!!");
+	});
+})
 
 // logout user
 app.delete(['/sessions', '/logout'], function (req, res) {
@@ -124,37 +138,44 @@ app.delete(['/sessions', '/logout'], function (req, res) {
 
 
 
-
-
-
-
-
-
-
 /* Usernames */
-var usernames = {};
-var numUsers = 0;
+userIds = {};
+activeUsers = [];
 
 /* Socket.IO Routes */
 io.on('connection', function (socket) {
-	console.log("A user connected");
+	console.log("A user connected: " + socket.id);
+// match socket id with user
+	socket.emit('getSessionId'); // emit to front end to get the session id sent back to add2userlist
+	socket.on('add2userlist', function (userdata) {
+		console.log("add2userlist:", userdata);
+		console.log("socke.id:", socket.id);
+		userIds[socket.id] = userdata;
+		activeUsers = Object.keys(userIds);
+		console.log("ActiveUsers:", activeUsers);
+	});
+// on disconnect delete user from userIds array
 	socket.on('disconnect', function () {
 		console.log("user disconnected");
+		delete userIds[(socket.id)];
+		activeUsers = Object.keys(userIds);
+		console.log("user IDs: " + userIds);	
 	});
 	socket.on('chat message', function (msg) { 
+		console.log('users: ' + userIds);
+		console.log('chat socket: ' + socket.id);
+		console.log("userIds: " + userIds);
 		io.emit('chat message', msg);
-		console.log('message: ' + msg);
 	});
 	socket.on('box-clicked', function (rgb) {
 		io.emit('box-clicked', rgb);
-	})
+	});
 	socket.on('login-name', function (name) {
 		socket.username = name;
 		console.log("socket.username: " + socket.username);
 		usernames.username = name;
 		console.log("usernames: " + usernames.username);
 		++numUsers;
-		// addedUser = true;
 		socket.emit('login', {
 			numUsers: numUsers
 		});
@@ -166,7 +187,7 @@ io.on('connection', function (socket) {
 		io.emit('clicked-cell', celldata);
 	});
 
-});
+}); // io.on connection end
 
 
 
