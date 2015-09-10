@@ -292,7 +292,7 @@ io.on('connection', function (socket) {
 //  socket.broadcast.to(socketid).emit('message', 'for your eyes only');
 
 /* Server listening port */
-var port = 3000
-http.listen(port, function() {
-	console.log('listening on localhost:' + port);
+var port3000 = 3000
+http.listen(process.env.PORT || port3000, function() {
+	console.log('listening on localhost:' + port3000);
 });
