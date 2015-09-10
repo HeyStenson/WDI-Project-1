@@ -27,8 +27,8 @@ $(function() { // Document ready
 	});
 	socket.on('chat message', function (msg) {
 		$('#message-list').append($('<li tabindex="1">').text(msg));
-		// trying to scroll to bottom for each message without using focus()
-		// $('#message-list').scrollIntoView({block: "end", behavior: "smooth"});
+		
+		$('#message-list').scrollTop($('#message-list')[0].scrollHeight)
 	});
 
 // change color of box
