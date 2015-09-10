@@ -197,17 +197,32 @@ io.on('connection', function (socket) {
 		socket.broadcast.emit('addJoinButton', joinGameButtons); // add the Join game button for all other clients
 	});
 	// remove button if game is joined
-	socket.on('join-game', function (sid) {
+	socket.on('join-game', function (sid, name) {
 		delete joinGameButtons[sid];
 		io.emit('addJoinButton', joinGameButtons); // refresh everyone's join game buttons
-		socket.broadcast.to(sid).emit('game-joined', socket.id, userIds[socket.id].username);
+		socket.broadcast.to(sid).emit('game-joined', sid, name, socket.id, userIds[socket.id].username);
 	})
 /* TickTackToe connections */
-	socket.on('clicked-cell', function (celldata) {
-		console.log("received clicked cell");
-		console.log("celldata: " + celldata.cell + ", " + celldata.player);
-		io.emit('clicked-cell', celldata);
+	// fill in X or O in cell clicked
+	socket.on('cell-clicked', function (sid, cell, XO) {
+		console.log("In cell-clicked", sid, cell, XO);
+		console.log(typeof(XO));
+		socket.broadcast.to(sid).emit('clicked-cell', cell, XO);
 	});
+	// passing game object to other player
+	socket.on('next-turn', function(game) {
+		console.log("NEXT-TURN", game);
+		console.log(typeof(game.whosTurn));
+		var sid = (game.whosTurn) ? game.player1_sid : game.player2_sid;
+		console.log("Who's sid:", game.whosTurn, sid);
+		socket.broadcast.to(sid).emit('next-turn', game);
+	});
+
+	// socket.on('clicked-cell', function (celldata) {
+	// 	console.log("received clicked cell");
+	// 	console.log("celldata: " + celldata.cell + ", " + celldata.player);
+	// 	io.emit('clicked-cell', celldata);
+	// });
 
 }); // io.on connection end
 

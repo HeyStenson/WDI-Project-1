@@ -3,6 +3,9 @@ GA WDI Project 1, online multiplayer game
 
 ## Done 
 
+* Sprint 7:
+When game started users take turn to play, could not get prototype methods to work when sent back and forth over socket.io so using functions at the moment
+
 * Sprint 6:
 User can create a game, other users can join and a private link is established between the two.
 
@@ -36,7 +39,7 @@ Set up node server and use socket.io protocol to allow two clients to communicat
 
 ### To Do
 
-* Sprint 7
+* Sprint 7.1
 Play game with win logic
 
 * Sprint 8
