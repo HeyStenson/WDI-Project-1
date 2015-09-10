@@ -10,6 +10,7 @@ $(function() { // Document ready
 		});
 	});
 	socket.on('userList', function (userIds) {
+		users = userIds;
 		$('#user-list').text('') // clear list before appending updated names
 		var socketIds = Object.keys(userIds);
 		socketIds.forEach(function (sid) {
@@ -46,6 +47,8 @@ $(function() { // Document ready
 	function zeroTo255() {
 		return (Math.floor(Math.random() * 256));
 	}
+/* variables */
+	users = {};
 
 
 }); // Document ready end

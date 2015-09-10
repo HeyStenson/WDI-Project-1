@@ -3,6 +3,9 @@ GA WDI Project 1, online multiplayer game
 
 ## Done 
 
+* Sprint 6:
+User can create a game, other users can join and a private link is established between the two.
+
 * Sprint 5
 Add Tick Tack Toe to index.html
 
@@ -33,5 +36,8 @@ Set up node server and use socket.io protocol to allow two clients to communicat
 
 ### To Do
 
-* Sprint 6:
-Prevent interraction with tick tack toe game unless in a game, user should be able to create socket room and other user should be able to join
+* Sprint 7
+Play game with win logic
+
+* Sprint 8
+Player stats saved to database

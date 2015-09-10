@@ -141,6 +141,7 @@ app.delete(['/sessions', '/logout'], function (req, res) {
 /* Usernames */
 userIds = {};
 activeUsers = [];
+joinGameButtons = {};
 
 /* Socket.IO Routes */
 /* Main lobby */
@@ -156,12 +157,16 @@ io.on('connection', function (socket) {
 		console.log("ActiveUsers:", activeUsers);
 		io.emit('userList', userIds); // send userIds to all clients
 	});
+	socket.emit('addJoinButton', joinGameButtons); // add join existion join buttons for new clients
 // on disconnect delete user from userIds array
 	socket.on('disconnect', function () {
-		console.log("user disconnected");
+		var dname = (userIds[socket.id]) ? userIds[socket.id].username : "client";
+		console.log(dname,"disconnected");
 		delete userIds[socket.id];
+		delete joinGameButtons[socket.id];
 		activeUsers = Object.keys(userIds);
 		console.log("user IDs: ", userIds);	
+		io.emit('addJoinButton', joinGameButtons); // refresh everyone's join game buttons
 		io.emit('userList', userIds); // send userIds to all clients
 	});
 	socket.on('chat message', function (msg) { 
@@ -184,12 +189,19 @@ io.on('connection', function (socket) {
 			numUsers: numUsers
 		});
 	});
-	socket.on('create-game', function (username) {
-		var nsp = io.of(username);
-		nsp.on('connection', function (socket) {
-			console.log("Someone logged in to game room");
-		});
+	// Create new game, send join button to clients
+	socket.on('create-game', function (userName) {
+		console.log("In create-game socket receiver", userName);
+		var buttonStr = '<button value="' + socket.id + '" name="' + userName + '" class="join-game">Play against ' + userName + '</button><br>';
+		joinGameButtons[socket.id] = buttonStr; // add button to list
+		socket.broadcast.emit('addJoinButton', joinGameButtons); // add the Join game button for all other clients
 	});
+	// remove button if game is joined
+	socket.on('join-game', function (sid) {
+		delete joinGameButtons[sid];
+		io.emit('addJoinButton', joinGameButtons); // refresh everyone's join game buttons
+		socket.broadcast.to(sid).emit('game-joined', socket.id, userIds[socket.id].username);
+	})
 /* TickTackToe connections */
 	socket.on('clicked-cell', function (celldata) {
 		console.log("received clicked cell");
@@ -198,7 +210,6 @@ io.on('connection', function (socket) {
 	});
 
 }); // io.on connection end
-
 
 
 // // sending to sender-client only
