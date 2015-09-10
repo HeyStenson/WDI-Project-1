@@ -3,6 +3,9 @@ GA WDI Project 1, online multiplayer game
 
 ## Done 
 
+* Sprint 7.2
+A draw is registered as well now
+
 * Sprint 7.1
 Play game with win logic
 

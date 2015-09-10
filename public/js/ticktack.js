@@ -48,7 +48,7 @@ $(function() { // document ready
 		console.log("received private message from opponent, you are:", host_sid, host_name, ". Opponent is:", opponent_sid, opponent_name);
 		game = new Game(host_sid, host_name , opponent_sid, opponent_name);
 		console.log("GAME!!", game);
-		game.init;
+		init();
 		socket.emit('next-turn', game); // sends game obj to opponent
 	});
 
@@ -65,9 +65,12 @@ $(function() { // document ready
 		console.log("player clicked cell", cell);
 		$(cell).text(XO);
 	});
-	socket.on('winner', function (winner) {
+	socket.on('winner', function () {
 		winnerFunction(false); // did not win if this is called
 	});
+	socket.on('draw', function () {
+		drawFunction();
+	});	
 
 	$('#gameboard').click(function (ec) {
 		console.log(ec.target.id);
@@ -85,13 +88,19 @@ $(function() { // document ready
 			$(cell).text(XO);
 			socket.emit('cell-clicked', sid, cell, XO); // send update to other player
 			game.lastMove = cell;
+			++game.turnCount;
 			var winner = hasWon(XO);
 			if (winner.hasWon) {
 				console.log("game won by:", winner.player);
 				socket.emit('winner', winner.loserSid);
 				winnerFunction(true); // won if this is called
+			} else if (game.turnCount >= 9) {
+				 console.log("Draw");
+				 drawFunction();
+				 socket.emit('draw', sid);
 			} else {
 				game.whosTurn = !game.whosTurn; // toggles who's turn it is
+				console.log("turnCount:", game.turnCount);
 				socket.emit('next-turn', game);
 			}
 			console.log("End of next-turn, does it trigger?");
@@ -155,6 +164,12 @@ $(function() { // document ready
 		alert((whoWon) ? "Congratulations, you won!" : "Pity, you lost");
 	}
 
+	function drawFunction() {
+		inGame = false;
+		myTurn = false;
+		alert("It's a draw! No Winner!");
+	}
+
 	/* Game Constructor */
 	function Game(host_sid, host_name , opponent_sid, opponent_name) {
 		this.player1 = host_name;
@@ -163,6 +178,7 @@ $(function() { // document ready
 		this.player2_sid = opponent_sid;
 		this.lastMove = "init";
 		this.whosTurn = false; // true for the hosts turn (player1), false for the opponents turn
+		this.turnCount = 0;
 	}
 
 }); // document ready end

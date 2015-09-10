@@ -222,7 +222,9 @@ io.on('connection', function (socket) {
 		socket.broadcast.to(sid).emit('winner');
 		// update winner stats for userIds[socket.id]
 	});
-
+	socket.on('draw', function(sid) {
+		socket.broadcast.to(sid).emit('draw');
+	});
 
 	// socket.on('clicked-cell', function (celldata) {
 	// 	console.log("received clicked cell");
