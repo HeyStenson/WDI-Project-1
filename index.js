@@ -200,6 +200,24 @@ io.on('connection', function (socket) {
 	socket.on('join-game', function (sid, name) {
 		delete joinGameButtons[sid];
 		io.emit('addJoinButton', joinGameButtons); // refresh everyone's join game buttons
+		// add one game to both players gamesPlayed
+		console.log("In Join game before updating gamesPlayed, sid:", sid, "name:", name, "socket:id:", socket.id, "userIds[socket.id]:", userIds[socket.id]);
+		var socketIds = [sid, socket.id];
+		socketIds.forEach(function (sid) {
+			userIds[sid].gamesPlayed++;
+			console.log("updated gamesPlayed", userIds[sid].username, userIds[sid].gamesPlayed);
+			db.User.findOne({_id: userIds[sid]._id}, function (err, user) {
+				user.gamesPlayed = userIds[sid].gamesPlayed;
+				db.User.update({_id: userIds[sid]._id}, user, {}, function (err, updatedUser){
+					if (err) {
+						console.log("ERROR in user DB update", err);
+					} else {
+						console.log("DB updated successfully:", updatedUser);
+					}
+				});
+			});
+		});
+		// start game
 		socket.broadcast.to(sid).emit('game-joined', sid, name, socket.id, userIds[socket.id].username);
 	})
 /* TickTackToe connections */
@@ -220,7 +238,21 @@ io.on('connection', function (socket) {
 	// winner!!!
 	socket.on('winner', function(sid) {
 		socket.broadcast.to(sid).emit('winner');
-		// update winner stats for userIds[socket.id]
+		var userWon = userIds[socket.id];
+		var id = userWon._id;
+		++userWon.gamesWon;
+		console.log("GamesWon:", userWon.gamesWon);
+		console.log("winner's user ID:" , id);
+		db.User.findOne({_id: id}, function (err, user) {
+			user.gamesWon = userWon.gamesWon;
+			db.User.update({_id: id}, user, {}, function (err, updatedUser){
+				if (err) {
+					console.log("ERROR in user DB update", err);
+				} else {
+					console.log("DB updated successfully:", updatedUser);
+				}
+			});
+		});
 	});
 	socket.on('draw', function(sid) {
 		socket.broadcast.to(sid).emit('draw');
