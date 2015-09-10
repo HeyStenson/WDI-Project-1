@@ -136,19 +136,18 @@ app.delete(['/sessions', '/logout'], function (req, res) {
 	res.redirect('/login');
 });
 
-
-
 /* Usernames */
 userIds = {};
 activeUsers = [];
 joinGameButtons = {};
+chatHistory = ["-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-","-"];
 
 /* Socket.IO Routes */
 /* Main lobby */
 io.on('connection', function (socket) {
 	console.log("A user connected: " + socket.id);
 // match socket id with user
-	socket.emit('getSessionId'); // emit to front end to get the session id sent back to add2userlist
+	socket.emit('getSessionId', chatHistory); // emit to front end to get the session id sent back to add2userlist
 	socket.on('add2userlist', function (userdata) { // receives userdata and adds them to userIds
 		console.log("add2userlist:", userdata);
 		console.log("socke.id:", socket.id);
@@ -169,12 +168,14 @@ io.on('connection', function (socket) {
 		io.emit('addJoinButton', joinGameButtons); // refresh everyone's join game buttons
 		io.emit('userList', userIds); // send userIds to all clients
 	});
-	socket.on('chat message', function (msg) { 
+	socket.on('chat-message', function (msg) { 
 		console.log('users: ' + userIds);
 		console.log('chat socket: ' + socket.id);
 		console.log("userIds: " + userIds);
 		msg = userIds[socket.id].username + " - " + msg;
-		io.emit('chat message', msg);
+		chatHistory.push(msg); // add new msg
+		chatHistory.shift(); // remove old msg
+		io.emit('chat-message', msg);
 	});
 	socket.on('box-clicked', function (rgb) {
 		io.emit('box-clicked', rgb);
@@ -258,12 +259,6 @@ io.on('connection', function (socket) {
 		socket.broadcast.to(sid).emit('draw');
 	});
 
-	// socket.on('clicked-cell', function (celldata) {
-	// 	console.log("received clicked cell");
-	// 	console.log("celldata: " + celldata.cell + ", " + celldata.player);
-	// 	io.emit('clicked-cell', celldata);
-	// });
-
 }); // io.on connection end
 
 
@@ -280,7 +275,7 @@ io.on('connection', function (socket) {
 //  socket.broadcast.to('game').emit('message', 'nice game');
 
 //  // sending to all clients in 'game' room(channel), include sender
-//  io.in('game').emit('message', 'cool game');
+//  io.in('game').emit('message', 'cool gamesWonme');
 
 //  // sending to sender client, only if they are in 'game' room(channel)
 //  socket.to('game').emit('message', 'enjoy the game');

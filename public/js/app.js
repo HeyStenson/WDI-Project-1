@@ -2,7 +2,8 @@ $(function() { // Document ready
 	console.log("Santity check, document ready");
 	/* Socket.io connections */
 	socket = io(); // connect client with socket
-	socket.on('getSessionId', function () { 
+	socket.on('getSessionId', function (chatHistory) { 
+		postChatHistory(chatHistory); // populates the chat with the last 20 messages
 		console.log("received socket emit from backend");
 		$.get('/getSessionId', function (userdata) {
 			console.log("userdata received", userdata);
@@ -21,13 +22,12 @@ $(function() { // Document ready
 
 // chat message
 	$('#message-form').submit(function() {
-		socket.emit('chat message', $('#chat-message').val());
+		socket.emit('chat-message', $('#chat-message').val());
 		$('#chat-message').val('');
 		return false;
 	});
-	socket.on('chat message', function (msg) {
+	socket.on('chat-message', function (msg) {
 		$('#message-list').append($('<li tabindex="1">').text(msg));
-		
 		$('#message-list').scrollTop($('#message-list')[0].scrollHeight)
 	});
 
@@ -47,6 +47,13 @@ $(function() { // Document ready
 	function zeroTo255() {
 		return (Math.floor(Math.random() * 256));
 	}
+	function postChatHistory (chatHistory) {
+		chatHistory.forEach(function (msg) {
+			$('#message-list').append($('<li tabindex="1">').text(msg));
+		});
+		$('#message-list').scrollTop($('#message-list')[0].scrollHeight)
+	}
+
 /* variables */
 	users = {};
 
