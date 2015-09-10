@@ -25,8 +25,12 @@ $(function() { // document ready
 // Create Game
 	$('#create-game').click(function() {
 		var userName = users[socket.id].username;
-		console.log("create new game",userName , users);
-		if (!inGame) {
+		console.log("in create game",userName , users);
+		if ($('#create-game').text() === "Waiting for someone to join") {
+			// cancel created game
+		} else if (!inGame) {
+			$('#create-game').text("Waiting for someone to join");
+			$('#create-game').css('background-color', 'rgb(138,249,198)');
 			socket.emit('create-game', userName);
 		}
 	});
