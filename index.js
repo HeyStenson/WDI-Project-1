@@ -217,6 +217,12 @@ io.on('connection', function (socket) {
 		console.log("Who's sid:", game.whosTurn, sid);
 		socket.broadcast.to(sid).emit('next-turn', game);
 	});
+	// winner!!!
+	socket.on('winner', function(sid) {
+		socket.broadcast.to(sid).emit('winner');
+		// update winner stats for userIds[socket.id]
+	});
+
 
 	// socket.on('clicked-cell', function (celldata) {
 	// 	console.log("received clicked cell");

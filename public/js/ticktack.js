@@ -2,7 +2,6 @@ $(function() { // document ready
 	console.log("Santity check, document ready");
 
 	/* client variables */	
-	var whosTurn = "O"; // temp probably
 	var inGame = false;
 	var myTurn = false; // can only click if true
 	game = new Game(null, null, null, null);
@@ -23,14 +22,11 @@ $(function() { // document ready
 		}
 	});
 
-	
-
 // Create Game
 	$('#create-game').click(function() {
 		var userName = users[socket.id].username;
 		console.log("create new game",userName , users);
 		if (!inGame) {
-			isHost = true;
 			socket.emit('create-game', userName);
 		}
 	});
@@ -69,6 +65,9 @@ $(function() { // document ready
 		console.log("player clicked cell", cell);
 		$(cell).text(XO);
 	});
+	socket.on('winner', function (winner) {
+		winnerFunction(false); // did not win if this is called
+	});
 
 	$('#gameboard').click(function (ec) {
 		console.log(ec.target.id);
@@ -86,8 +85,11 @@ $(function() { // document ready
 			$(cell).text(XO);
 			socket.emit('cell-clicked', sid, cell, XO); // send update to other player
 			game.lastMove = cell;
-			if (hasWon()) {
-				console.log("game won by:TBD");
+			var winner = hasWon(XO);
+			if (winner.hasWon) {
+				console.log("game won by:", winner.player);
+				socket.emit('winner', winner.loserSid);
+				winnerFunction(true); // won if this is called
 			} else {
 				game.whosTurn = !game.whosTurn; // toggles who's turn it is
 				socket.emit('next-turn', game);
@@ -110,11 +112,47 @@ $(function() { // document ready
 		$('#r3c3').text('');
 	}
 
-
-	function hasWon () {
-		// write win logic
+	function hasWon (XO) {
 		console.log("hasWon called");
-		return false;
+		var winner = {hasWon: false, player: "", loserSid: ""};
+			//rows
+		if (($('#r1c1').text() === XO 
+			&& $('#r1c2').text() === XO 
+			&& $('#r1c3').text() === XO)
+			|| ($('#r2c1').text() === XO 
+			&& $('#r2c2').text() === XO 
+			&& $('#r2c3').text() === XO)
+			|| ($('#r3c1').text() === XO 
+			&& $('#r3c2').text() === XO 
+			&& $('#r3c3').text() === XO)
+			// collumns
+			|| ($('#r1c1').text() === XO 
+			&& $('#r2c1').text() === XO 
+			&& $('#r3c1').text() === XO)
+			|| ($('#r1c2').text() === XO 
+			&& $('#r2c2').text() === XO 
+			&& $('#r3c2').text() === XO)
+			|| ($('#r1c3').text() === XO 
+			&& $('#r2c3').text() === XO 
+			&& $('#r3c3').text() === XO)
+			// diagonal
+			||($('#r1c1').text() === XO 
+			&& $('#r2c2').text() === XO 
+			&& $('#r3c3').text() === XO) 
+			|| ($('#r1c3').text() === XO 
+			&& $('#r2c2').text() === XO 
+			&& $('#r3c1').text() === XO)) {
+			winner.hasWon = true;
+			winner.player = (XO === "X") ? game.player2 : game.player1;
+			winner.loserSid = (XO === "X") ? game.player1_sid : game.player2_sid;
+		}
+		return winner;
+	}
+
+	function winnerFunction(whoWon) {
+		inGame = false;
+		myTurn = false;
+		alert((whoWon) ? "Congratulations, you won!" : "Pity, you lost");
 	}
 
 	/* Game Constructor */
@@ -124,11 +162,7 @@ $(function() { // document ready
 		this.player2 = opponent_name;
 		this.player2_sid = opponent_sid;
 		this.lastMove = "init";
-		this.whosTurn = false; // true is the hosts turn (player1), false is the opponents turn
-	};
-
-
-
-
+		this.whosTurn = false; // true for the hosts turn (player1), false for the opponents turn
+	}
 
 }); // document ready end
