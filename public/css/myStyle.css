@@ -1,67 +1,65 @@
-* { 
+/** { 
 	margin: 0; padding: 0; box-sizing: border-box; 
-}
-body { 
+}*/
+/*body { 
 	font: 13px Helvetica, Arial;
 	height: 100vh;
 	width: 600px;
-}
+}*/
 /* Whole chat section */
-#chat-section {
-	position: relative;
+/*.border {
 	border: 2px solid black;
-}
+}*/
 /* Login bar at the top */
-#login-bar {
+/*#login-bar {
 	position: relative;
 	padding: 0; 
 	width: 300px; 
 	margin: 10px auto; 
-}
-.chat {
+}*/
+/*.chat {
 	width: 400px;
 	height: 523px;
 	top: 0;
 	left: 0;
-}
-#login-input {
+}*/
+/*#login-input {
 	display: flex;
 }
 #login-input button { 
 	background: rgb(77,145,239); 
 	border: 1px solid black; 
 	padding: 10px; 
-}
-#nickname {
+}*/
+/*#nickname {
 	border: 1px solid black; 
 	padding: 10px; 
 	width: 100%; 
-}
+}*/
 
 
 /* Login screen over chat section */
-#chat-div {
-	position: relative;
-	width: inherit;
-
-}
+/*#chat-div {
+	padding: 0;
+}*/
 /* Chat */
-#message-form {
+/*#message-form {
 	background: #000; 
 	padding: 3px; 
 	display: flex;
 	width: 100%; 
-}
-#message-form input {
+}*/
+/*#message-form input {
 	border: 0; 
 	padding: 10px; 
 	width: 100%; 
-}
-#message-form button { 
+}*/
+/*#message-form button { 
 	background: rgb(130, 224, 255); 
 	border: none; 
 	padding: 10px; 
 }
+*/
 #message-list {
 	height: 482px;
 	list-style-type: none; 

@@ -1,4 +1,4 @@
-#gameboard {
+/*#gameboard {
 	width: 160px;
 	height: 160px;
 	background-color: black;
@@ -10,7 +10,7 @@
 
 .cell {
 	float: left; /* display inline creates margins */
-	background-color: #E0C57F;
+/*	background-color: #E0C57F;
 	width: 33%;
 	height: 100%;
 	border: 1px solid black;
@@ -20,9 +20,9 @@
 	text-align: center;
 	font-size: 60px;
 	font-family: 'Indie Flower', cursive;
-}
+}*/
 
-.selected-cell {
-	/*background-color: #cb6;*/
+/*.selected-cell {
+	background-color: #cb6;
 	background-color: red;
-}
+}*/

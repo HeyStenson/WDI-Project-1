@@ -2,61 +2,68 @@
 <html>
 <% include head %>
 <body>
-<!-- Chat window -->
-	<div id="chat-section" class="chat">
-<!-- Chat window including input field -->
-		<ul id="message-list"></ul>
-		<div id="chat-div" class="">
-			<form id="message-form" action="">
-				<input id="chat-message" autocomplete="off">
-				<button>Send</button>
-			</form>
-		</div>
-	</div>
-<!-- End of chat -->
-	<div id ="stats">
-		<div id="your-stats" class="stats">
-			<h1 id="your-name"></h1>
-			<p>Games Played: <span id="your-gamesPlayed"></span></p>
-			<p>Win Ratio: <span id="your-winRatio"></span>%</p>
-		</div>
-		<div id="opponents-stats" class="stats">
-			<h1 id="opponents-name">[Opponent]</h1>
-			<p>Games Played: <span id="opponents-gamesPlayed"></span></p>
-			<p>Win Ratio: <span id="opponents-winRatio"></span>%</p>
-		</div>
-	</div>
-	<div id="ticktack-div">
-		<h2>Tick Tack Toe</h2>
-		<div id="gameboard">
-			<div id="row1" class="row">
-				<div id="r1c1" class="cell"></div>
-				<div id="r1c2" class="cell"></div>
-				<div id="r1c3" class="cell"></div>
-			</div>
-			<div id="row2" class="row">
-				<div id="r2c1" class="cell"></div>
-				<div id="r2c2" class="cell"></div>
-				<div id="r2c3" class="cell"></div>
-			</div>
-			<div id="row3" class="row">		
-				<div id="r3c1" class="cell"></div>
-				<div id="r3c2" class="cell"></div>
-				<div id="r3c3" class="cell"></div>			
+	<div class="container">
+		<h1>Kristian's GA-WDI Project 1</h1>
+	<!-- Chat window -->
+		<div class="panel panel-default panel-body col-md-4">
+			<ul id="message-list"></ul>
+			<div id="chat-div" class="">
+					<form id="message-form" action="">
+				<div class="input-group">
+						<input id="chat-message" autocomplete="off" class="form-control">
+						<span class="input-group-btn">
+							<button class="btn btn-default">Send</button>
+						</span>
+				</div>
+					</form>
 			</div>
 		</div>
-		<div id="join-game"></div>
-		<button id="create-game">Create Game</button>
+	<!-- End of chat -->
+		<div class="column col-md-8">
+			<div id ="stats" class="row">
+				<div id="your-stats" class="col-xs-6">
+					<h1 id="your-name"></h1>
+					<p>Games Played: <span id="your-gamesPlayed"></span></p>
+					<p>Win Ratio: <span id="your-winRatio"></span>%</p>
+				</div>
+				<div id="opponents-stats" class="col-xs-6">
+					<h1 id="opponents-name">[Opponent]</h1>
+					<p>Games Played: <span id="opponents-gamesPlayed"></span></p>
+					<p>Win Ratio: <span id="opponents-winRatio"></span>%</p>
+				</div>
+			</div>
+			<div class="column col-md-8">
+				<h2>Tick Tack Toe</h2>
+				<div id="gameboard" class="container-fluid">
+					<div id="row1" class="row">
+						<div id="r1c1" class="col-xs-4">X</div>
+						<div id="r1c2" class="col-xs-4"></div>
+						<div id="r1c3" class="col-xs-4"></div>
+					</div>
+					<div id="row2" class="row">
+						<div id="r2c1" class="cell"></div>
+						<div id="r2c2" class="cell"></div>
+						<div id="r2c3" class="cell"></div>
+					</div>
+					<div id="row3" class="row">		
+						<div id="r3c1" class="cell"></div>
+						<div id="r3c2" class="cell"></div>
+						<div id="r3c3" class="cell"></div>			
+					</div>
+				</div>
+				<div id="join-game"></div>
+				<button id="create-game">Create Game</button>
+			</div>
+			<div id="color-box">Click to change the color</div>
+		</div>
+		<!-- Logout button, hmtl delete request sent as post but overridden in the backend -->
+		<form method="post" action="/logout?_method=DELETE">
+			<button type="submit">Logout</button>
+		</form>
+		<div>
+			<h2>Users:</h2>
+			<ul id="user-list"></ul>
+		</div>
 	</div>
-	<div id="color-box">Click to change the color</div>
-	<!-- Logout button, hmtl delete request sent as post but overridden in the backend -->
-	<form method="post" action="/logout?_method=DELETE">
-		<button type="submit">Logout</button>
-	</form>
-	<div>
-		<h2>Logged in users:</h2>
-		<ul id="user-list"></ul>
-	</div>
-
 </body>
 </html>

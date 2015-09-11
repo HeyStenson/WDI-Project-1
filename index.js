@@ -18,6 +18,7 @@ app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use('/static', express.static('public'));
 app.use('/vendor', express.static('node_modules'));
+app.use('/style', express.static('bower_components'));
 
 app.set('view engine', 'ejs');
 
