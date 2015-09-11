@@ -1,16 +1,21 @@
 <html>
 <% include head %>
 <body>
-	<h1>Signup to play</h1>
-	<form id="signup-form" method="POST" action="/signup">
-		<div>
-			<input id="username" type"text" name="user[username]" placeholder="Your Username" autocomplete="false">
-		</div>
-		<div>
-			<input id="password1" type="password" name="user[password]" placeholder="Create a password" autocomplete="false">
-			<input id="password2" type="password" name="comparePassword" placeholder="Confirm your password" autocomplete="false">
-		</div>
-		<button>Signup</button>
-	</form>
+	<% include banner %>
+	<div class="container">
+		<h1 class="myFont">Signup to play</h1>
+		<br>
+		<form id="signup-form" method="POST" action="/signup">
+			<div>
+				<input id="username" type"text" name="user[username]" placeholder="Choose a Username" autocomplete="false" class="form-control">
+			</div>
+			<br>
+			<div>
+				<input id="password1" type="password" name="user[password]" placeholder="Create a password" autocomplete="false" class="form-control">
+				<input id="password2" type="password" name="comparePassword" placeholder="Confirm your password" autocomplete="false" class="form-control">
+			</div>
+			<button class="btn-lg banner-purple create-btn">Signup</button>
+		</form>
+	</div>
 </body>
 </html>

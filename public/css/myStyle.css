@@ -1,3 +1,8 @@
+body {
+	background: url(http://i.stack.imgur.com/yZYef.gif);
+
+}
+
 
 .myFont {
 	font-family: 'Indie Flower', cursive;
@@ -48,7 +53,10 @@
 	border-radius: 4px;
 	border: 2px solid purple;
 }
+.signup {
+/*	height: px;*/
 
+}
 
 #message-list {
 	height: 482px;
@@ -98,5 +106,5 @@
 	color: red;
 	background-color: purple;
 	border-radius: 10px;
-	margin-bottom: 20px;
+	margin-bottom: 20px;ccc
 }

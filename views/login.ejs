@@ -2,16 +2,21 @@
 <head>
 <% include head %>
 <body>
-	<h1>Login to play game</h1>
-	<form id="login-form" method="POST" action="/login">
-		<div>
-			<input type="text" name="user[username]" placeholder="Enter your username">
-		</div>
-		<div>
-			<input type="password" name="user[password]" placeholder="Enter you password">
-		</div>
-		<button type="submit">Login</button>
-	</form>
-	<a href="/signup">Signup</a>
+	<% include banner %>
+	<div class="container">
+		<h1 class="myFont">Login to play game</h1>
+		<br>
+		<form id="login-form" method="POST" action="/login">
+			<div>
+				<input type="text" name="user[username]" placeholder="Enter your username" class="form-control">
+			</div>
+			<br>
+			<div>
+				<input type="password" name="user[password]" placeholder="Enter you password" class="form-control">
+			</div>
+			<button type="submit" class="btn-lg banner-purple create-btn">Login</button>
+		</form>
+		<a href="/signup" class="btn-lg banner-purple create-btn">Signup</a>
+	</div>
 </body>
 </html>
