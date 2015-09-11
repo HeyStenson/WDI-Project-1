@@ -35,7 +35,6 @@ $(function() { // document ready
 			// cancel created game
 		} else if (!inGame) {
 			$('#create-game').text("Waiting for someone to join");
-			$('#create-game').css('background-color', 'rgb(138,249,198)');
 			socket.emit('create-game');
 		}
 	});

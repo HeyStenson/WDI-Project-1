@@ -1,65 +1,55 @@
-/** { 
-	margin: 0; padding: 0; box-sizing: border-box; 
-}*/
-/*body { 
-	font: 13px Helvetica, Arial;
-	height: 100vh;
-	width: 600px;
-}*/
-/* Whole chat section */
-/*.border {
-	border: 2px solid black;
-}*/
-/* Login bar at the top */
-/*#login-bar {
-	position: relative;
-	padding: 0; 
-	width: 300px; 
-	margin: 10px auto; 
-}*/
-/*.chat {
-	width: 400px;
-	height: 523px;
-	top: 0;
-	left: 0;
-}*/
-/*#login-input {
-	display: flex;
+
+.myFont {
+	font-family: 'Indie Flower', cursive;
 }
-#login-input button { 
-	background: rgb(77,145,239); 
-	border: 1px solid black; 
-	padding: 10px; 
-}*/
-/*#nickname {
-	border: 1px solid black; 
-	padding: 10px; 
-	width: 100%; 
-}*/
+
+.banner {
+	margin-bottom: 25px;
+	height: 80px;
+	width: 100%;
+	line-height: 60px;
+	font-size: 40px;
+	padding: 10px;
+}
+
+.banner-purple {
+	color: white;
+	text-align: center;
+  background-image:
+  linear-gradient(
+    to bottom left, 
+    black, purple
+  );
+}
+
+.logout {
+	float: right;
+}
+.logout button {
+	background: none!important;
+	border: none;
+	color: white;
+	font-family: arial;
+	font-size: 16px;
+	padding:0!important;
+}
+.create-btn {
+	width: 200px;
+	height: 70px;
+	margin-top: 61px;
+}
+
+.join-btn {
+	width: 200px;
+	height: 34px;
+	background: black;
+	color: white;
+	padding: 5px;
+	border-radius: 4px;
+	border: 2px solid purple;
+}
 
 
-/* Login screen over chat section */
-/*#chat-div {
-	padding: 0;
-}*/
-/* Chat */
-/*#message-form {
-	background: #000; 
-	padding: 3px; 
-	display: flex;
-	width: 100%; 
-}*/
-/*#message-form input {
-	border: 0; 
-	padding: 10px; 
-	width: 100%; 
-}*/
-/*#message-form button { 
-	background: rgb(130, 224, 255); 
-	border: none; 
-	padding: 10px; 
-}
-*/
 #message-list {
 	height: 482px;
 	list-style-type: none; 
@@ -74,9 +64,39 @@
 	background: #eee; 
 }
 
-#color-box {
+.game-title {
+	text-align: center;
+}
+
+.game-bottom-margin {
+	margin-bottom: 30px;
+}
+
+.game-row {
 	height: 100px;
-	width: 100px;
+	width: 300px;
+	margin: 0 auto;
+}
+
+.game-cell {
+	float: left; /* display inline creates margins */
+	background-color: #E0C57F;
+	width: 33%;
+	height: 100px;
+	border: 1px solid black;
+	border-radius: 6px;
+	line-height: 100%;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 100px;
+	font-family: 'Indie Flower', cursive;
+}
+
+
+#color-box {
+	height: 20vh;
 	color: red;
-	background-color: green;
+	background-color: purple;
+	border-radius: 10px;
+	margin-bottom: 20px;
 }

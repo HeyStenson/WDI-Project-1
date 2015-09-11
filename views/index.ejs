@@ -2,67 +2,78 @@
 <html>
 <% include head %>
 <body>
+	<div class="banner banner-purple myFont">
+		Kristian's GA-WDI Project 1
+		<span class="logout">
+			<form method="post" action="/logout?_method=DELETE">
+				<button type="submit">Logout</button>
+			</form>
+		</span>
+	</div>
 	<div class="container">
-		<h1>Kristian's GA-WDI Project 1</h1>
+		<div class="column col-md-8">
+			<div id ="stats" class="row">
+				<div id="your-stats" class="col-xs-6 panel panel-default panel-body">
+					<h1 id="your-name" class="myFont"></h1>
+					<p>Games Played: <span id="your-gamesPlayed"></span></p>
+					<p>Win Ratio: <span id="your-winRatio"></span>%</p>
+				</div>
+				<div id="opponents-stats" class="col-xs-6 panel panel-default panel-body">
+					<h1 id="opponents-name" class="myFont">[Opponent]</h1>
+					<p>Games Played: <span id="opponents-gamesPlayed"></span></p>
+					<p>Win Ratio: <span id="opponents-winRatio"></span>%</p>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<button id="create-game" class="btn-lg banner-purple create-btn">Create Game</button>
+				<div id="join-game"></div>
+			</div>
+			<div class="col-xs-8 game-bottom-margin">
+				<div class="center-block">
+					<h2 class="myFont game-title">Tick Tack Toe</h2>
+					<div id="gameboard" class="">
+						<div id="row1" class="game-row">
+							<div id="r1c1" class="game-cell"></div>
+							<div id="r1c2" class="game-cell"></div>
+							<div id="r1c3" class="game-cell"></div>
+						</div>
+						<div id="row2" class=" game-row">
+							<div id="r2c1" class="game-cell"></div>
+							<div id="r2c2" class="game-cell"></div>
+							<div id="r2c3" class="game-cell"></div>
+						</div>
+						<div id="row3" class=" game-row">		
+							<div id="r3c1" class="game-cell"></div>
+							<div id="r3c2" class="game-cell"></div>
+							<div id="r3c3" class="game-cell"></div>			
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	<!-- Chat window -->
-		<div class="panel panel-default panel-body col-md-4">
+		<div class="panel panel-default panel-body col-xs-12 col-md-4">
 			<ul id="message-list"></ul>
 			<div id="chat-div" class="">
 					<form id="message-form" action="">
 				<div class="input-group">
 						<input id="chat-message" autocomplete="off" class="form-control">
 						<span class="input-group-btn">
-							<button class="btn btn-default">Send</button>
+							<button class="btn ">Send</button>
 						</span>
 				</div>
 					</form>
 			</div>
 		</div>
 	<!-- End of chat -->
-		<div class="column col-md-8">
-			<div id ="stats" class="row">
-				<div id="your-stats" class="col-xs-6">
-					<h1 id="your-name"></h1>
-					<p>Games Played: <span id="your-gamesPlayed"></span></p>
-					<p>Win Ratio: <span id="your-winRatio"></span>%</p>
-				</div>
-				<div id="opponents-stats" class="col-xs-6">
-					<h1 id="opponents-name">[Opponent]</h1>
-					<p>Games Played: <span id="opponents-gamesPlayed"></span></p>
-					<p>Win Ratio: <span id="opponents-winRatio"></span>%</p>
-				</div>
+		<div class="col-xs-12">
+			<div class="col-xs-4 col-md-2">
+				<h2 class="myFont">Users:</h2>
+				<ul id="user-list"></ul>
 			</div>
-			<div class="column col-md-8">
-				<h2>Tick Tack Toe</h2>
-				<div id="gameboard" class="container-fluid">
-					<div id="row1" class="row">
-						<div id="r1c1" class="col-xs-4">X</div>
-						<div id="r1c2" class="col-xs-4"></div>
-						<div id="r1c3" class="col-xs-4"></div>
-					</div>
-					<div id="row2" class="row">
-						<div id="r2c1" class="cell"></div>
-						<div id="r2c2" class="cell"></div>
-						<div id="r2c3" class="cell"></div>
-					</div>
-					<div id="row3" class="row">		
-						<div id="r3c1" class="cell"></div>
-						<div id="r3c2" class="cell"></div>
-						<div id="r3c3" class="cell"></div>			
-					</div>
-				</div>
-				<div id="join-game"></div>
-				<button id="create-game">Create Game</button>
+			<div class="col-xs-8 col-md-10 myFont">Click to change the color (first display of successfull socket.io interaction)
+				<div id="color-box" class="col-xs-12"></div>
 			</div>
-			<div id="color-box">Click to change the color</div>
-		</div>
-		<!-- Logout button, hmtl delete request sent as post but overridden in the backend -->
-		<form method="post" action="/logout?_method=DELETE">
-			<button type="submit">Logout</button>
-		</form>
-		<div>
-			<h2>Users:</h2>
-			<ul id="user-list"></ul>
 		</div>
 	</div>
 </body>

@@ -199,7 +199,7 @@ io.on('connection', function (socket) {
 			? Math.round((hostUser.gamesWon / hostUser.gamesPlayed) * 100)
 			: 0;
 		var titleRatio = "Games Played: " + hostUser.gamesPlayed + ", Win Ratio: " + ratio + "%";
-		var buttonStr = '<button value="' + socket.id + '" name="' + hostUser.username + '" gamesPlayed="' + hostUser.gamesPlayed + '" gamesWon="' + hostUser.gamesWon + '" title="' + titleRatio + '" class="join-game">Play against ' + hostUser.username + '</button><br>';
+		var buttonStr = '<button value="' + socket.id + '" name="' + hostUser.username + '" gamesPlayed="' + hostUser.gamesPlayed + '" gamesWon="' + hostUser.gamesWon + '" title="' + titleRatio + '" class="join-btn">Play against ' + hostUser.username + '</button><br>';
 		joinGameButtons[socket.id] = buttonStr; // add button to list
 		socket.broadcast.emit('addJoinButton', joinGameButtons); // add the Join game button for all other clients
 	});
