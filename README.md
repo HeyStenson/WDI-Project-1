@@ -3,6 +3,12 @@ GA WDI Project 1, online multiplayer game
 
 ## Done 
 
+* Sprint 9
+Make game look nice with bootstrap
+
+* Sprint 8
+Player stats saved to database
+
 * Sprint 7.2
 A draw is registered as well now
 
@@ -45,11 +51,5 @@ Set up node server and use socket.io protocol to allow two clients to communicat
 
 ### To Do
 
-* Sprint 8
-Player stats saved to database
-
-* Sprint 9
-Make game look nice
-
 * Sprint 10
-Make fun game to play
+Make a game that is fun to play
