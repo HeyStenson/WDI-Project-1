@@ -7,8 +7,7 @@ var UserSchema = new Schema({
 		passwordDigest: {type: String, required: true},
 		createdAt: {type: Date, default: Date.now},
 		gamesPlayed: {type: Number, default: 0},
-		gamesWon: {type: Number, default: 0},
-		winRatio: {type: Number, default: 0}
+		gamesWon: {type: Number, default: 0}
 });
 
 UserSchema.statics.createSecure = function (username, password, cb) {

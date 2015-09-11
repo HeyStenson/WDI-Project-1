@@ -1,6 +1,6 @@
 $(function() { // document ready
 	/* Ajax connections */
-	$("form").on('submit', function (e) {
+	$("#signup-form").on('submit', function (e) {
 		$('#username').css('background', '');
 		$('#password1').css('background', '');
 		$('#password2').css('background', '');

@@ -13,6 +13,11 @@ $(function() { // document ready
 			inGame = true;
 			var sid = join.target.value;
 			var name = join.target.name;
+			var gamesWon = parseInt(join.target.attributes["gameswon"].value);
+			var gamesPlayed = parseInt(join.target.attributes["gamesplayed"].value);
+			var opponent = {username: name, gamesPlayed: gamesPlayed + 1, gamesWon: gamesWon};
+			opponentUserStats(opponent);
+			// but = join;
 			// info = join.target;
 			console.log("opponent:", sid, name);
 			// remove button for everyone
@@ -24,14 +29,14 @@ $(function() { // document ready
 
 // Create Game
 	$('#create-game').click(function() {
-		var userName = users[socket.id].username;
-		console.log("in create game",userName , users);
+		// var userName = $('#your-name').text();
+		// console.log("in create game",userName);
 		if ($('#create-game').text() === "Waiting for someone to join") {
 			// cancel created game
 		} else if (!inGame) {
 			$('#create-game').text("Waiting for someone to join");
 			$('#create-game').css('background-color', 'rgb(138,249,198)');
-			socket.emit('create-game', userName);
+			socket.emit('create-game');
 		}
 	});
 	// add join game button
@@ -47,16 +52,23 @@ $(function() { // document ready
 	$('#join-game').html(tmpButtons);
 	});
 	// Start game //
-	socket.on('game-joined', function (host_sid, host_name, opponent_sid, opponent_name) {
+	socket.on('game-joined', function (host_sid, host_name, opponent_sid, opponentData) {
 		inGame = true;
-		console.log("received private message from opponent, you are:", host_sid, host_name, ". Opponent is:", opponent_sid, opponent_name);
-		game = new Game(host_sid, host_name , opponent_sid, opponent_name);
+		opponentUserStats(opponentData);
+		console.log("received private message from opponent, you are:", host_sid, host_name, ". Opponent is:", opponent_sid, opponentData.username);
+		game = new Game(host_sid, host_name , opponent_sid, opponentData.username);
 		console.log("GAME!!", game);
 		init();
 		socket.emit('next-turn', game); // sends game obj to opponent
 	});
 
-	socket.on("next-turn", function (sentGame) {
+	// socket.on('hostStats', function (hostData) {
+	// 	console.log("received host's data", hostData);
+	// 	opponentUserStats(hostData);
+	// });
+
+
+	socket.on('next-turn', function (sentGame) {
 		game = sentGame;
 		console.log("GAME IN NEXT-TURN,", game);
 		if (game.lastMove === "init") {
@@ -183,6 +195,16 @@ $(function() { // document ready
 		this.lastMove = "init";
 		this.whosTurn = false; // true for the hosts turn (player1), false for the opponents turn
 		this.turnCount = 0;
+	}
+
+	/* Functions */
+		function opponentUserStats (thisUser) { // replace with _.template
+		$('#opponents-name').text(thisUser.username);
+		$('#opponents-gamesPlayed').text(thisUser.gamesPlayed - 1);
+		var ratio = (thisUser.gamesPlayed > 1)
+			? Math.round((thisUser.gamesWon / (thisUser.gamesPlayed - 1)) * 100)
+			: 0;
+		$('#opponents-winRatio').text(ratio);
 	}
 
 }); // document ready end

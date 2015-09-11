@@ -11,7 +11,8 @@ $(function() { // Document ready
 		});
 	});
 	socket.on('userList', function (userIds) {
-		users = userIds;
+		console.log("socket.id in userList", socket.id);
+		thisUserStats(userIds[socket.id]); // update your stats
 		$('#user-list').text('') // clear list before appending updated names
 		var socketIds = Object.keys(userIds);
 		socketIds.forEach(function (sid) {
@@ -54,8 +55,15 @@ $(function() { // Document ready
 		$('#message-list').scrollTop($('#message-list')[0].scrollHeight)
 	}
 
-/* variables */
-	users = {};
+	function thisUserStats (thisUser) { // replace with _.template
+		$('#your-name').text(thisUser.username);
+		$('#your-gamesPlayed').text(thisUser.gamesPlayed);
+		var ratio = (thisUser.gamesPlayed > 0)
+			? Math.round((thisUser.gamesWon / thisUser.gamesPlayed) * 100)
+			: 0;
+		$('#your-winRatio').text(ratio);
+	}
+
 
 
 }); // Document ready end

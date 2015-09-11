@@ -1,15 +1,8 @@
 <html>
-<head>
-	<title>Proj-1 Signup</title>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script type="text/javascript" src="/vendor/jquery/dist/jquery.min.js"></script>
-  <script type="text/javascript" src="/static/js/signup.js"></script>	
-</head>
+<% include head %>
 <body>
 	<h1>Signup to play</h1>
-	<form method="POST" action="/signup">
+	<form id="signup-form" method="POST" action="/signup">
 		<div>
 			<input id="username" type"text" name="user[username]" placeholder="Your Username" autocomplete="false">
 		</div>

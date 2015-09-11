@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Socket.IO app</title>
-	<link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="/static/css/myStyle.css">
-	<link rel="stylesheet" type="text/css" href="/static/css/ticktack.css">
-	<script type="text/javascript" src="/vendor/jquery/dist/jquery.min.js"></script>
-	<script src="socket.io/socket.io.js"></script>
-	<script type="text/javascript" src="/static/js/app.js"></script>
-	<script type="text/javascript" src="/static/js/ticktack.js"></script>
-</head>
+<% include head %>
 <body>
 <!-- Chat window -->
 	<div id="chat-section" class="chat">
@@ -23,6 +14,18 @@
 		</div>
 	</div>
 <!-- End of chat -->
+	<div id ="stats">
+		<div id="your-stats" class="stats">
+			<h1 id="your-name"></h1>
+			<p>Games Played: <span id="your-gamesPlayed"></span></p>
+			<p>Win Ratio: <span id="your-winRatio"></span>%</p>
+		</div>
+		<div id="opponents-stats" class="stats">
+			<h1 id="opponents-name"></h1>
+			<p>Games Played: <span id="opponents-gamesPlayed"></span></p>
+			<p>Win Ratio: <span id="opponents-winRatio"></span>%</p>
+		</div>
+	</div>
 	<div id="ticktack-div">
 		<h2>Tick Tack Toe</h2>
 		<div id="gameboard">
@@ -54,5 +57,6 @@
 		<h2>Logged in users:</h2>
 		<ul id="user-list"></ul>
 	</div>
+
 </body>
 </html>

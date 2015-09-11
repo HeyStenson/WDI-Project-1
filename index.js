@@ -7,6 +7,7 @@ var express = require('express'),
 		bodyParser = require('body-parser'),
 		db = require('./models'),
 		session = require('express-session'),
+		ejs = require('ejs');
 		methodOverride = require('method-override');
 
 
@@ -17,6 +18,9 @@ app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use('/static', express.static('public'));
 app.use('/vendor', express.static('node_modules'));
+
+app.set('view engine', 'ejs');
+
 
 /* create a session */
 app.use(
@@ -59,26 +63,28 @@ app.use(function (req, res, next) {
 app.get(['/', '/home'], function (req, res) {
 	req.currentUser(function (err, user) {
 		console.log("req when going to /: " + req);
-		(user) ? res.sendFile(path.join(views, 'index.html')) : res.redirect('/login');
+		(user) ? res.render('index') : res.redirect('/login');
 	});
 });
 
 app.get('/login', function (req, res) {
 	req.currentUser(function (err, user) {
-		(user) ? res.sendFile(path.join(views, 'index.html')) : res.sendFile(path.join(views, 'login.html'));
+		(user) ? res.render('index') : res.render('login');
 	});
 });
 
 app.post('/login', function (req, res) {
+	console.log("HIT LOGIN ROUTE")
 	var user = req.body.user,
 			username = user.username,
 			password = user.password;
 	db.User.authenticate(username, password, function (err, user) {
 		if (err) {
-			res.send(err);
+			res.send("ERROR", err);
 		} else {
 			console.log(user);
 			req.login(user);
+			console.log("redirecting home!")
 			res.redirect('/'); 
 		}
 	});
@@ -87,7 +93,7 @@ app.post('/login', function (req, res) {
 
 app.get('/signup', function (req, res) {
 	req.currentUser(function (err, user) {
-		(user) ? res.sendFile(path.join(views, 'index.html')) : res.sendFile(path.join(views, 'signup.html')) ;
+		(user) ? res.render(path.join(views, 'index')) : res.render(path.join(views, 'signup')) ;
 	});
 });	
 
@@ -114,12 +120,6 @@ app.post('/signup', function (req, res) {
 		}
 	});
 });
-
-// app.get('/ticktack', function (req, res) {
-// 	req.currentUser(function (err, user) {
-// 		(user) ? res.sendFile(path.join(views, 'ticktack.html')) : res.redirect('/login');
-// 	});
-// });
 
 app.get('/getSessionId', function (req, res) {
 	console.log("Arrived at /getSessionId");
@@ -191,9 +191,14 @@ io.on('connection', function (socket) {
 		});
 	});
 	// Create new game, send join button to clients
-	socket.on('create-game', function (userName) {
-		console.log("In create-game socket receiver", userName);
-		var buttonStr = '<button value="' + socket.id + '" name="' + userName + '" class="join-game">Play against ' + userName + '</button><br>';
+	socket.on('create-game', function () {
+		var hostUser = userIds[socket.id];
+		console.log("In create-game socket receiver", hostUser.username);
+		var ratio = (hostUser.gamesPlayed > 0)
+			? Math.round((hostUser.gamesWon / hostUser.gamesPlayed) * 100)
+			: 0;
+		var titleRatio = "Games Played: " + hostUser.gamesPlayed + ", Win Ratio: " + ratio + "%";
+		var buttonStr = '<button value="' + socket.id + '" name="' + hostUser.username + '" gamesPlayed="' + hostUser.gamesPlayed + '" gamesWon="' + hostUser.gamesWon + '" title="' + titleRatio + '" class="join-game">Play against ' + hostUser.username + '</button><br>';
 		joinGameButtons[socket.id] = buttonStr; // add button to list
 		socket.broadcast.emit('addJoinButton', joinGameButtons); // add the Join game button for all other clients
 	});
@@ -219,8 +224,15 @@ io.on('connection', function (socket) {
 			});
 		});
 		// start game
-		socket.broadcast.to(sid).emit('game-joined', sid, name, socket.id, userIds[socket.id].username);
-	})
+		// var hostSid = socket.id;
+		// console.log("----------////////-----------", hostSid, sid);
+		// socket.broadcast.to(hostSid).emit('hostStats', userIds[hostSid]);
+		socket.broadcast.to(sid).emit('game-joined', sid, name, socket.id, userIds[socket.id]);
+	});
+	// cancel created game
+	socket.on('cancel-game', function () {
+		// remove join button and put back create game button to default
+	});
 /* TickTackToe connections */
 	// fill in X or O in cell clicked
 	socket.on('cell-clicked', function (sid, cell, XO) {
@@ -287,7 +299,7 @@ io.on('connection', function (socket) {
 //  socket.broadcast.to(socketid).emit('message', 'for your eyes only');
 
 /* Server listening port */
-var port3000 = 3000
-http.listen(process.env.PORT || port3000, function() {
-	console.log('listening on localhost:' + port3000);
+var localPort = 3000
+http.listen(process.env.PORT || localPort, function() {
+	console.log('listening on localhost:' + localPort);
 });
