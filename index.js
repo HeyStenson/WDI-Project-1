@@ -81,12 +81,14 @@ app.post('/login', function (req, res) {
 			password = user.password;
 	db.User.authenticate(username, password, function (err, user) {
 		if (err) {
-			res.send("ERROR", err);
+			console.log("Login err: ", err);
+			res.status(404).send(err);
+
 		} else {
 			console.log(user);
 			req.login(user);
 			console.log("redirecting home!")
-			res.redirect('/'); 
+			res.send('/'); 
 		}
 	});
 });

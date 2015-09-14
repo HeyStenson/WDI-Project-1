@@ -64,6 +64,20 @@ $(function() { // Document ready
 		$('#your-winRatio').text(ratio);
 	}
 
+	$('.login-form').on('submit', function(data){
+		data.preventDefault();
+		console.log(data);
+		var data = {username: data.user.username, password: data.user.password};
+		$.post('/login', data)
+			.success(function handleSuccess(endpoint){
+				console.log("success", endpoint);
+				window.location.href = endpoint;
+			})
+		.error(function handleError(err){
+			console.log("error", err);
+			$('.form-control').css('background', "pink");
+		})
+	})
 
 
 }); // Document ready end
