@@ -63,7 +63,7 @@ app.use(function (req, res, next) {
 /* HTML Routes */
 app.get(['/', '/home'], function (req, res) {
 	req.currentUser(function (err, user) {
-		console.log("req when going to /: " + req);
+		console.log("req when going to /: ", req);
 		(user) ? res.render('index') : res.redirect('/login');
 	});
 });
@@ -76,7 +76,7 @@ app.get('/login', function (req, res) {
 
 app.post('/login', function (req, res) {
 	console.log("HIT LOGIN ROUTE")
-	var user = req.body.user,
+	var user = req.body,
 			username = user.username,
 			password = user.password;
 	db.User.authenticate(username, password, function (err, user) {

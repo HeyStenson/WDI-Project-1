@@ -64,10 +64,11 @@ $(function() { // Document ready
 		$('#your-winRatio').text(ratio);
 	}
 
-	$('.login-form').on('submit', function(data){
+	$('#login-form').on('submit', function(data){
 		data.preventDefault();
-		console.log(data);
-		var data = {username: data.user.username, password: data.user.password};
+		console.log("we are testing this response: ", data);
+		da = data;
+		var data = {username: data.target.username.value, password: data.target.password.value};
 		$.post('/login', data)
 			.success(function handleSuccess(endpoint){
 				console.log("success", endpoint);
